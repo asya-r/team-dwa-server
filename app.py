@@ -1,10 +1,9 @@
 from flask import Flask, request
-from DbModels import Person
+from DbModels import Person, Complaint
 from db_connect import db_session_init
 import json
 
 db_session_init()
-from peewee import MySQLDatabase
 app = Flask(__name__)
 
 
@@ -16,23 +15,33 @@ def hello_world():
 @app.route('/registration', methods=['POST'])
 def registration():
     person = Person()
-    for k in request.form.keys():
-        setattr(person, k, request.form[k])
+    print(request.get_data())
+    content = request.get_json()
+    for k in content.keys():
+        print(k)
+        setattr(person, k, content[k])
     person.save()
-    return str(person.id)
+    return json.dumps({'id': person.id})
 
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login', methods=['POST'])
 def login():
-    person = Person.select().where(Person.email == request.form['email'] and Person.password == request.form['password'])
+    content = request.get_json()
+    person = Person.select().where(Person.email == content['email'] and Person.password == content['password'])
     if person:
-        return str(person.id)
+        return json.dumps({'id': person[0].id})
     return
 
 
 @app.route('/send_claim', methods=['POST'])
-def send_claim():
-    pass
+def send_complaint():
+    complaint = Complaint()
+    content = request.get_json()
+    for k in content.keys():
+        print(k)
+        setattr(complaint, k, content[k])
+    complaint.save()
+    return json.dumps({'id': complaint.id})
 
 
 if __name__ == '__main__':

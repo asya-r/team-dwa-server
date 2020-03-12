@@ -15,7 +15,7 @@ class Person(Model):
         database = db
 
 
-class Claim(Model):
+class Complaint(Model):
     person = ForeignKeyField(Person)
     date = DateField()
     lat = FloatField()
@@ -29,4 +29,4 @@ class Claim(Model):
 
 if __name__ == '__main__':
     db.connect()
-    db.create_tables([Claim])
+    db.create_tables([Complaint])
