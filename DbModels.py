@@ -15,6 +15,18 @@ class Person(Model):
         database = db
 
 
+class Claim(Model):
+    person = ForeignKeyField(Person)
+    date = DateField()
+    lat = FloatField()
+    lng = FloatField()
+    comment = TextField()
+    subunit = CharField()
+
+    class Meta:
+        database = db
+
+
 if __name__ == '__main__':
     db.connect()
-    db.create_tables([Person])
+    db.create_tables([Claim])

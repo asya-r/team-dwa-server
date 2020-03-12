@@ -26,8 +26,13 @@ def registration():
 def login():
     person = Person.select().where(Person.email == request.form['email'] and Person.password == request.form['password'])
     if person:
-        return True
-    return False
+        return str(person.id)
+    return
+
+
+@app.route('/send_claim', methods=['POST'])
+def send_claim():
+    pass
 
 
 if __name__ == '__main__':
