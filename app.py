@@ -44,5 +44,18 @@ def send_complaint():
     return json.dumps({'id': complaint.id})
 
 
+@app.route('/show_person', methods=['POST'])
+def show_person():
+    content = request.get_json()
+    person = Person.get_or_none(Person.id == content['id'])
+    if person:
+        return json.dumps({'first_name': person.first_name,
+                           'last_name': person.last_name,
+                           'patronymic': person.patronymic,
+                           'email': person.email,
+                           'phone': person.phone})
+    return
+
+
 if __name__ == '__main__':
     app.run()
